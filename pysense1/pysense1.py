@@ -31,6 +31,8 @@ num = 0
 while True:
 
     print("==================================================================================")
+    pycom.rgbled(0x007f00) # switch to green color for embedded led
+
     print("run number = "+str(num))
     num = num + 1
 
@@ -56,5 +58,8 @@ while True:
 
     print("9- Battery voltage: " + str(py.read_battery_voltage()))
 
-    time.sleep(15)
+    time.sleep(1)
+    pycom.rgbled(0x7f0000) # red color for embedded led
 
+    # every 5 seconds..
+    time.sleep(5)

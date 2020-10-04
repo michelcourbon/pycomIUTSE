@@ -31,8 +31,8 @@ num = 0
 while True:
 
     print("==================================================================================")
+    pycom.rgbled(0x007f00) # switch to green color for embedded led
     print("run number = "+str(num))
-    pycom.rgbled(0x007f00) # green color for embedded led
     num = num + 1
 
     lt = LTR329ALS01(py) # I2C sensor acquisition
