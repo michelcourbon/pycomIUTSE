@@ -17,7 +17,7 @@ wlan = WLAN(mode=WLAN.STA)
 print ("mac address = "+ ubinascii.hexlify(wlan.mac().sta_mac,':').decode())
 strID = ubinascii.hexlify(wlan.mac().sta_mac,'').decode()
 # hostname from the 4 last characters
-hostNameID = "node_"+strID[-5:]
+hostNameID = "N"+strID[-5:]
 print("hostname = " + hostNameID)
 
 

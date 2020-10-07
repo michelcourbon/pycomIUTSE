@@ -1,17 +1,22 @@
 #!/usr/bin/env python
 #
-# example to connect to wifi network in base station mode STA
-# please configure configWifi file before run
+# Copyright (c) 2019, Pycom Limited.
+#
+# This software is licensed under the GNU GPL version 3 or any
+# later version, with permitted additional terms. For more information
+# see the Pycom Licence v1.0 document supplied with this file, or
+# available at https://www.pycom.io/opensource/licensing
+#
 
 from network import WLAN
 from mqtt import MQTTClient
-import pycom
 import machine
 import time
 import ubinascii
-import config
+import configMQTT
 
-pycom.heartbeat(True)
+def settimeout(duration): 
+    pass
 
 wlan = WLAN(mode=WLAN.STA)
 
@@ -19,31 +24,26 @@ wlan = WLAN(mode=WLAN.STA)
 print ("mac address = "+ ubinascii.hexlify(wlan.mac().sta_mac,':').decode())
 strID = ubinascii.hexlify(wlan.mac().sta_mac,'').decode()
 # hostname from the 4 last characters
-hostNameID = "node_"+strID[-5:]
+hostNameID = ("N"+strID[-5:]).upper()
 print("hostname = " + hostNameID)
 
-nets = wlan.scan()
+wlan.connect(configMQTT.WIFI_SSID, auth=(WLAN.WPA2, configMQTT.WIFI_PASS), timeout=5000)
 
-# connect process for network configuration in config file
-if wlan.isconnected():
-     print("config status: "+wlan.ifconfig())
-else:
-     for net in nets:
-          if (net.ssid == config.WIFI_SSID):
-               wlan.connect(net.ssid, auth=(net.sec, config.WIFI_PASS), timeout=5000, hostname=hostNameID)
-               while not wlan.isconnected():
-                    machine.idle() # save power while waiting
-               print(wlan.ifconfig())
-               print("Connected with IP address:" + wlan.ifconfig()[0])
-               print(" & hostname: "+wlan.hostname())
+while not wlan.isconnected(): 
+     machine.idle()
 
-# to suppress timeout error
-def settimeout(duration): 
-    pass
-
-client = MQTTClient(hostNameID, config.MQTT_SERVER, port=1883)
+print("Connected to Wifi\n")
+client = MQTTClient("demo", configMQTT.MQTT_SERVER, port=1883)
 client.settimeout = settimeout
-
-#client.set_callback(sub_cb)
 client.connect()
 
+topics="/"+hostNameID+"/lights"
+print("publish to "+topics)
+
+while True:
+     print("Sending ON")
+     client.publish(topics, "ON")
+     time.sleep(2)
+     print("Sending OFF")
+     client.publish(topics, "OFF")
+     time.sleep(2)
