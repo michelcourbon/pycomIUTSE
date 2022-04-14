@@ -10,7 +10,6 @@ import ubinascii
 import configWifi
 
 pycom.heartbeat(True)
-
 wlan = WLAN(mode=WLAN.STA)
 
 # classical mac writing convention
@@ -20,22 +19,22 @@ strID = ubinascii.hexlify(wlan.mac().sta_mac,'').decode()
 hostNameID = "N"+strID[-5:]
 print("hostname = " + hostNameID)
 
-
-nets = wlan.scan()
-# list all enable ssid
-for net in nets:
-     print('Network found with ssid : '+net.ssid)     
-print('scanning SSID finished !!')
-
-# connect process for network configuration in configWifi file
 if wlan.isconnected():
-     print(wlan.ifconfig())
+     print("configuration actuelle = ",wlan.ifconfig())
 else:
+     nets = wlan.scan()
+     # list all enable ssid
+     for net in nets:
+          print('Network found with ssid : '+net.ssid)     
+     print('scanning SSID finished !!')
+
+     # connect process for network configuration in configWifi file
      for net in nets:
           if (net.ssid == configWifi.WIFI_SSID):
-               wlan.connect(net.ssid, auth=(net.sec, configWifi.WIFI_PASS), timeout=5000, hostname=hostNameID)
+               wlan.connect(net.ssid, auth=(net.sec, configWifi.WIFI_PASS), timeout=8000, hostname=hostNameID)
                while not wlan.isconnected():
                     machine.idle() # save power while waiting
                print(wlan.ifconfig())
                print("Connected with IP address:" + wlan.ifconfig()[0])
                print(" & hostname: "+wlan.hostname())
+print ("----------------------")
