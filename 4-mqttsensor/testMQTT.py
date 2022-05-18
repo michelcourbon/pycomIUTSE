@@ -41,9 +41,10 @@ wlanConnect()
 mqttId = NodeUid()
 topic = NodeUid()+ b'/sensors'
 print("topic : ",topic, type(topic))
+print("mqtt id : ",mqttId, type(mqttId))
 
-client = MQTTClient(client_id=mqttId,server=config.MQTT_SERVER,port=1883,user=config.MQTT_USER,password=config.MQTT_PASS)
-client.set_last_will(topic=topic, msg='lastWill', retain=False, qos=0)
+client = MQTTClient(client_id=mqttId,server=config.MQTT_SERVER,port=1883,user=config.MQTT_USER,password=config.MQTT_PASS,keepalive=60)
+client.set_last_will(topic=topic, msg='lastWill', retain=True, qos=0)
 client.connect()
 time.sleep(1)
 print ("connected to MQTT server")
@@ -54,11 +55,11 @@ while True:
     JsonString = JsonString.replace("xx",temp)
     MqttMsg = bytes(JsonString, 'utf-8')
     try:
-        client.publish(topic, MqttMsg, retain=False, qos=0)
+        client.publish(topic, MqttMsg, retain=True, qos=0)
         print("publish : ",MqttMsg)
     except:
         print("Can not publish message - reconnecting")
         client.disconnect()
         time.sleep(1)
         client.connect()
-    time.sleep(3)
+    time.sleep(5)
