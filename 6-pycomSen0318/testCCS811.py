@@ -25,4 +25,4 @@ while True:
     if co2 > 10:
         print('CO2 level: ' + str(co2) + ' ppm')
         print('tVOC level: ' + str(voc))
-
+    time.sleep(3)

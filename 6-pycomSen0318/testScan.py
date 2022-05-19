@@ -1,6 +1,6 @@
 
 # default P9 = SDA = green / P10 = SCL = blue
-# verify CC811 chip 
+# verify CC811 chip at 90 / ADS1115 at 0x48 or 0x49 not working ?
 
 from machine import I2C
 
