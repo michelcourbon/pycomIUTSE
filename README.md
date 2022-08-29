@@ -5,10 +5,11 @@ pycom examples folders : wipy mount on pysense board, to use in classroom experi
 - 3-wifitest : test wifi connexion to access point (modify config file according your access point)
 - 4-mqttsensor : test the connexion to a mqtt server via wifi
 - 5-pycom-neopixel : example to drive neopixel LED (hardware : expansion board & neopixel LED)
+- 6-mqttPysense : example to send json string containing sensors (from pysense hardware) to mqtt server
 
 all examples tested with WIPY, usage of this repository :
-- download (or git clone)
-- open the example folder with Vscode
-- modify config, and upload this folder in the wipy memory
+- download zip file (or git clone)
+- open the example folder with Vscode (with pymakr extension) 
+- modify config (wifi and mqtt), and upload one of this folders in the wipy memory
 - open in the editor window, the python macro you wish to test
 - run .. & that's all
