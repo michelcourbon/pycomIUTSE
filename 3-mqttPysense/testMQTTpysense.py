@@ -56,8 +56,8 @@ print ("connected to MQTT server")
 
 while True:
     si = SI7006A20(py)
-    temp = str(si.temperature())
-    hum = str(si.humidity())
+    temp = str(round(si.temperature(),2))
+    hum = str(round(si.humidity(),1))
 
     JsonString = '{"Temperature":xx,"Humidite":yy}'
     JsonString = JsonString.replace("xx",temp)
